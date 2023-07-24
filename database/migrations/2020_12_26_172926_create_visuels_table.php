@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Bien;
 
 class CreateVisuelsTable extends Migration
 {
@@ -17,17 +18,11 @@ class CreateVisuelsTable extends Migration
             $table->id();
             $table->unsignedSmallInteger('typeVisuel');
             $table->string('urlVisuel');
-            $table->unsignedTinyInteger('bien_id');
+            $table->foreignIdFor(Bien::class, 'bien_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedSmallInteger('etat')->default(1);
             $table->timestamps();
         });
 
-        Schema::table('visuels', function(Blueprint $table){
-            $table->foreign('bien_id')->references('id')
-                                      ->on('biens')
-                                      ->onDelete('restrict')
-                                      ->onUpdate('restrict');
-        });
     }
 
     /**
